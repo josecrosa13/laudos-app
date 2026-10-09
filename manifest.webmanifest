@@ -1,0 +1,16 @@
+{
+  "name": "Laudos — Dr. José Rosa",
+  "short_name": "Laudos",
+  "description": "Gerador e arquivo de laudos vasculares — Clínica Dr. José Rosa.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#2e3a5e",
+  "theme_color": "#2e3a5e",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

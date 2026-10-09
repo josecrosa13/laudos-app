@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2e3a5e">
+<title>Laudos — Dr. José Rosa</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- LOCK (LGPD: PIN) -->
+<div id="lock" class="lock hidden">
+  <div class="lockbox">
+    <img src="logo.jpg" class="locklogo" alt="logo">
+    <h2>Laudos Dr. José Rosa</h2>
+    <p id="lockmsg">Digite seu PIN</p>
+    <input id="pin" type="password" inputmode="numeric" maxlength="8" placeholder="PIN" autocomplete="off">
+    <button id="pinbtn" class="btn primary">Entrar</button>
+    <p class="fineprint">Protege os dados dos pacientes neste aparelho (LGPD).</p>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" class="app hidden">
+  <header class="topnav">
+    <img src="logo.jpg" class="navlogo" alt="logo">
+    <span class="navtitle">Laudos</span>
+    <nav>
+      <button class="tab active" data-view="novo">Novo</button>
+      <button class="tab" data-view="arquivo">Arquivo</button>
+      <button class="tab" data-view="modelos">Modelos</button>
+    </nav>
+  </header>
+
+  <!-- NOVO LAUDO -->
+  <main id="view-novo" class="view">
+    <div class="card">
+      <div class="grid2">
+        <label>Paciente
+          <div class="withmic">
+            <input id="f_paciente" type="text" placeholder="Nome do paciente">
+            <button class="mic" data-target="f_paciente" title="Ditar nome">🎤</button>
+          </div>
+        </label>
+        <label>Data <input id="f_data" type="date"></label>
+        <label>Idade <input id="f_idade" type="text" placeholder="ex: 48 anos"></label>
+        <label>Convênio
+          <select id="f_convenio"><option>Unimed</option><option>Particular</option><option>Outro</option></select>
+        </label>
+      </div>
+      <label>Exame / Indicação
+        <input id="f_exame" type="text" placeholder="ex: Eco-Doppler venoso de membros inferiores">
+      </label>
+    </div>
+
+    <div class="card">
+      <label>Modelo pronto
+        <select id="f_modelo">
+          <option value="">— escolher modelo —</option>
+          <option value="ecodoppler">Eco-Doppler Venoso</option>
+          <option value="microlaser">Microlaser</option>
+          <option value="espuma">Espuma Densa Ecoguiada</option>
+          <option value="endolaser">Endolaser</option>
+        </select>
+      </label>
+      <label>Corpo do laudo
+        <div class="withmic">
+          <textarea id="f_corpo" rows="12" placeholder="Escreva, escolha um modelo acima, ou toque no microfone para ditar..."></textarea>
+          <button class="mic big" data-target="f_corpo" title="Ditar laudo">🎤</button>
+        </div>
+      </label>
+      <p id="micstatus" class="micstatus"></p>
+      <button id="btn_salvar_modelo" class="btn ghost" style="width:100%">⭐ Salvar este texto como novo modelo</button>
+    </div>
+
+    <div class="actions">
+      <button id="btn_salvar" class="btn">💾 Salvar no arquivo</button>
+      <button id="btn_pdf" class="btn primary">📄 Gerar PDF / Imprimir</button>
+      <button id="btn_limpar" class="btn ghost">Limpar</button>
+    </div>
+    <p class="fineprint">Ao gerar o PDF, use "Salvar como PDF" ou "Compartilhar" na tela de impressão do celular.</p>
+  </main>
+
+  <!-- ARQUIVO -->
+  <main id="view-arquivo" class="view hidden">
+    <div class="card">
+      <input id="busca" type="search" placeholder="Buscar por nome...">
+    </div>
+    <div id="lista" class="lista"></div>
+    <p id="vazio" class="fineprint" style="text-align:center">Nenhum laudo arquivado ainda.</p>
+  </main>
+
+  <!-- MODELOS -->
+  <main id="view-modelos" class="view hidden">
+    <div class="card">
+      <label>Nome do modelo
+        <input id="m_nome" type="text" placeholder="ex: Eco-Doppler completo (meu padrão)">
+      </label>
+      <label>Conteúdo do modelo
+        <div class="withmic">
+          <textarea id="m_corpo" rows="10" placeholder="Escreva ou dite o texto-base deste modelo..."></textarea>
+          <button class="mic big" data-target="m_corpo" title="Ditar modelo">🎤</button>
+        </div>
+      </label>
+      <div class="actions">
+        <button id="m_salvar" class="btn primary">➕ Adicionar modelo</button>
+        <button id="m_limpar" class="btn ghost">Limpar</button>
+      </div>
+      <p class="fineprint">Seus modelos ficam salvos neste aparelho e aparecem na lista "Modelo pronto" da aba Novo.</p>
+    </div>
+    <div id="m_lista" class="lista"></div>
+  </main>
+</div>
+
+<!-- ÁREA DE IMPRESSÃO (vira o PDF) -->
+<div id="printarea" class="printarea">
+  <div class="p_topbar"></div>
+  <img id="p_logo" class="p_logo" src="logo.jpg" alt="logo">
+  <div class="p_clinic">Clínica Dr. José Rosa — Especialista em Varizes · Porto Velho/RO</div>
+  <div class="p_doc">Dr. José de Carvalho Rosa · CRM-RO 1330 · Cirurgião Vascular (RQE 658) · Ultrassonografista Vascular (RQE 659)</div>
+  <hr class="p_hr">
+  <div class="p_title">LAUDO MÉDICO VASCULAR</div>
+  <div class="p_ident">
+    <div><b>Paciente:</b> <span id="p_paciente"></span></div>
+    <div><b>Data:</b> <span id="p_data"></span> &nbsp;&nbsp; <b>Idade:</b> <span id="p_idade"></span> &nbsp;&nbsp; <b>Convênio:</b> <span id="p_convenio"></span></div>
+    <div><b>Exame/Indicação:</b> <span id="p_exame"></span></div>
+  </div>
+  <div id="p_corpo" class="p_corpo"></div>
+  <div class="p_sign">
+    <div class="p_signline"><b>Dr. José de Carvalho Rosa</b><br>
+    <span class="p_small">CRM-RO 1330 · Cirurgião Vascular (RQE 658) · Ultrassonografista Vascular (RQE 659)</span></div>
+  </div>
+  <div class="p_foot">Documento médico — uso exclusivo do paciente identificado acima · Clínica Dr. José Rosa · Porto Velho/RO</div>
+</div>
+
+<script src="templates.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
